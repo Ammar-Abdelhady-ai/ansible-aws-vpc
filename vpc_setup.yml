@@ -1,5 +1,6 @@
 ---
-- host: localhost
+- name: Create VPC
+  host: localhost
   connection: local
   tasks:
     - name: Import VPC Variables
