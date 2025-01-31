@@ -31,6 +31,4 @@
         map_public: yes
         resource_tags:
           Name: vprofile-public-subnet1
-        register: public_subnet1
-        
-      register: public_subnet
+      register: public_subnet1
