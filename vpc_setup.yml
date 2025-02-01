@@ -116,3 +116,12 @@
           - dest: 0.0.0.0/0
             gateway_id: "{{ igw.gateway_id }}"
       register: public_rt
+
+    - name: Create NAT Gateway
+      ec2_vpc_nat_gateway:
+        subnet_id: "{{ public_subnet1.subnet.id }}"
+        region: "{{ region }}"
+        state: "{{ state }}"
+        resource_tags:
+          Name: vprofile-nat-gw
+      register: nat_gw
