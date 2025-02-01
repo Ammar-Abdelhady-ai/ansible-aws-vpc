@@ -142,3 +142,19 @@
           - dest: 0.0.0.0/0
             gateway_id: "{{ nat_gw.nat_gateway_id }}"
       register: private_rt
+
+    - name: Store information in file
+      debug:
+        var: " {{item}} "
+      loop:
+        - vpcout.vpc.id
+        - public_subnet1.subnet.id
+        - public_subnet2.subnet.id
+        - public_subnet3.subnet.id
+        - private_subnet1.subnet.id
+        - private_subnet2.subnet.id
+        - private_subnet3.subnet.id
+        - igw.gateway_id
+        - public_rt.route_table_id
+        - nat_gw.nat_gateway_id
+        - private_rt.route_table_id
