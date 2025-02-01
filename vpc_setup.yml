@@ -175,5 +175,5 @@
    
     - name: Create Variables file for VPC output
       copy:
-        content: "vpcid: {{ vpcout.vpc.id }}\n public_subnet1: {{ public_subnet1.subnet.id }}\n public_subnet2: {{ public_subnet2.subnet.id }}\n public_subnet3: {{ public_subnet3.subnet.id }}\n private_subnet1: {{ private_subnet1.subnet.id }}\n private_subnet2: {{ private_subnet2.subnet.id }}\n private_subnet3: {{ private_subnet3.subnet.id }}\n igw: {{ igw.gateway_id }}\n public_rt: {{ public_rt.route_table_id }}\n nat_gw: {{ nat_gw.nat_gateway_id }}\n private_rt: {{ private_rt.route_table_id }}"
+        content: "vpcid: {{ vpcout.vpc.id }}\n public_subnet1: {{ public_subnet1.subnet.id }}\n public_subnet2: {{ public_subnet2.subnet.id }}\n public_subnet3: {{ public_subnet3.subnet.id }}\n private_subnet1: {{ private_subnet1.subnet.id }}\n private_subnet2: {{ private_subnet2.subnet.id }}\n private_subnet3: {{ private_subnet3.subnet.id }}\n igw: {{ igw.gateway_id }}\n public_rt: {{ public_rt.route_table.id }}\n nat_gw: {{ nat_gw.nat_gateway_id }}\n private_rt: {{ private_rt.route_table.id }}"
         dest: vars/vpc_output_vars         
