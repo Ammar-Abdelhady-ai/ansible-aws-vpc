@@ -155,9 +155,9 @@
         - private_subnet2.subnet.id
         - private_subnet3.subnet.id
         - igw.gateway_id
-        - public_rt.route_table_id
+        - public_rt.route_table.id
         - nat_gw.nat_gateway_id
-        - private_rt.route_table_id
+        - private_rt.route_table.id
 
     - name: Set ids as the fact Variables
       set_fact:
