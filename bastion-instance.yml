@@ -1,0 +1,17 @@
+- nmae: Set up bastion instance
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Import VPC Variables
+      include_vars: vars/vpc_setup.txt
+    
+    - name: Import Bastion Variables
+      include_vars: vars/bastion_instance.txt
+
+    - name: Import VPC Variables
+      include_vars: vars/output_vars
+      
+    - name: Create bastion instance
+      ec2_instance:
+        name: "{{ bastion_name }}"
+        ami: "{{ ami }}"
