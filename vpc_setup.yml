@@ -169,9 +169,9 @@
         private_subnet2: "{{ private_subnet2.subnet.id }}"
         private_subnet3: "{{ private_subnet3.subnet.id }}"
         igw: "{{ igw.gateway_id }}"
-        public_rt: "{{ public_rt.route_table_id }}"
+        public_rt: "{{ public_rt.route_table.id }}"
         nat_gw: "{{ nat_gw.nat_gateway_id }}"
-        private_rt: "{{ private_rt.route_table_id }}"
+        private_rt: "{{ private_rt.route_table.id }}"
    
     - name: Create Variables file for VPC output
       copy:
