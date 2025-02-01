@@ -101,3 +101,16 @@
         resource_tags:
           Name: vprofile-igw
       register: igw
+
+    - name: Set up Public Subnet Route Table
+      ec2_vpc_route_table:
+        vpc_id: "{{ vpcout.vpc.id }}"
+        region: "{{ region }}"
+        resource_tags:
+          Name: vprofile-public-rt
+        subnets:
+          - "{{ public_subnet1.subnet.id }}"
+          - "{{ public_subnet2.subnet.id }}"
+          - "{{ public_subnet3.subnet.id }}"
+        routes:
+          - dest:
