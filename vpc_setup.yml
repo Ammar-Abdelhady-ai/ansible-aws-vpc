@@ -127,3 +127,18 @@
         resource_tags:
           Name: vprofile-nat-gw
       register: nat_gw
+
+    - name: Set Up Private Subnet Route Table
+      ec2_vpc_route_table:
+        vpc_id: "{{ vpcout.vpc.id }}"
+        region: "{{ region }}"
+        resource_tags:
+          Name: vprofile-private-rt
+        subnets:
+          - "{{ private_subnet1.subnet.id }}"
+          - "{{ private_subnet2.subnet.id }}"
+          - "{{ private_subnet3.subnet.id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ nat_gw.nat_gateway_id }}"
+      register: private_rt
