@@ -158,22 +158,34 @@
         - public_rt.route_table.id
         - nat_gw.nat_gateway_id
         - private_rt.route_table.id
-
+        
     - name: Set ids as the fact Variables
       set_fact:
         vpcid: "{{ vpcout.vpc.id }}"
-        public_subnet1: "{{ public_subnet1.subnet.id }}"
-        public_subnet2: "{{ public_subnet2.subnet.id }}"
-        public_subnet3: "{{ public_subnet3.subnet.id }}"
-        private_subnet1: "{{ private_subnet1.subnet.id }}"
-        private_subnet2: "{{ private_subnet2.subnet.id }}"
-        private_subnet3: "{{ private_subnet3.subnet.id }}"
+        public_subnet1_id: "{{ public_subnet1.subnet.id }}"
+        public_subnet2_id: "{{ public_subnet2.subnet.id }}"
+        public_subnet3_id: "{{ public_subnet3.subnet.id }}"
+        private_subnet1_id: "{{ private_subnet1.subnet.id }}"
+        private_subnet2_id: "{{ private_subnet2.subnet.id }}"
+        private_subnet3_id: "{{ private_subnet3.subnet.id }}"
         igw: "{{ igw.gateway_id }}"
         public_rt: "{{ public_rt.route_table.id }}"
         nat_gw: "{{ nat_gw.nat_gateway_id }}"
         private_rt: "{{ private_rt.route_table.id }}"
-   
+
     - name: Create Variables file for VPC output
       copy:
-        content: "vpcid: {{ vpcout.vpc.id }}\n public_subnet1: {{ public_subnet1.subnet.id }}\n public_subnet2: {{ public_subnet2.subnet.id }}\n public_subnet3: {{ public_subnet3.subnet.id }}\n private_subnet1: {{ private_subnet1.subnet.id }}\n private_subnet2: {{ private_subnet2.subnet.id }}\n private_subnet3: {{ private_subnet3.subnet.id }}\n igw: {{ igw.gateway_id }}\n public_rt: {{ public_rt.route_table.id }}\n nat_gw: {{ nat_gw.nat_gateway_id }}\n private_rt: {{ private_rt.route_table.id }}"
-        dest: vars/vpc_output_vars         
+        content: |
+          vpcid: {{ vpcid }}
+          public_subnet1: {{ public_subnet1_id }}
+          public_subnet2: {{ public_subnet2_id }}
+          public_subnet3: {{ public_subnet3_id }}
+          private_subnet1: {{ private_subnet1_id }}
+          private_subnet2: {{ private_subnet2_id }}
+          private_subnet3: {{ private_subnet3_id }}
+          igw: {{ igw }}
+          public_rt: {{ public_rt }}
+          nat_gw: {{ nat_gw }}
+          private_rt: {{ private_rt }}
+        dest: vars/vpc_output_vars
+   
