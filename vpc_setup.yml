@@ -122,6 +122,8 @@
         subnet_id: "{{ public_subnet1.subnet.id }}"
         region: "{{ region }}"
         state: "{{ state }}"
+        wait: yes
+        if_exists_do_not_create: yes
         resource_tags:
           Name: vprofile-nat-gw
       register: nat_gw
