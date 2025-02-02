@@ -55,6 +55,6 @@
           Name: vprofile-bastion
           Project: vprofile
           Owner: Ammar
-        group_id: "{{ bastion_sg.group_id }}"
+        group_id: "{{ bastion_sg.group.id }}"
         vpc_subnet_id: "{{ public_subnet1 }}"
       register: bastion_instance
