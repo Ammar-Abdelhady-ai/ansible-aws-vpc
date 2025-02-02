@@ -44,6 +44,7 @@
         instance_type: t2.micro
         image: "{{ bastion_ami }}"
         wait: yes
+        wait_timeout: 300
         region: "{{ region }}"
         group_id: "{{ bastion_sg.group_id }}"
         vpc_subnet_id: "{{ public_subnet1 }}"
