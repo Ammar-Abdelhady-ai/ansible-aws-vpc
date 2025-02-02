@@ -41,13 +41,11 @@
     - name: Create Bastion Instance
       amazon.aws.ec2_instance:
         key_name: vprofile-key
+        region: "{{ region }}"
         instance_type: t2.micro
         image: "{{ bastion_ami }}"
         wait: yes
         wait_timeout: 300
-        region: "{{ region }}"
-        group_id: "{{ bastion_sg.group_id }}"
-        vpc_subnet_id: "{{ public_subnet1 }}"
         instance_tags:
           Name: vprofile-bastion
           Project: vprofile
@@ -57,4 +55,7 @@
           Name: vprofile-bastion
           Project: vprofile
           Owner: Ammar
-        state: "{{ state }}"
+        group_id: "{{ bastion_sg.group_id }}"
+        vpc_subnet_id: "{{ public_subnet1 }}"
+        
+      register: bastion_instance
