@@ -51,6 +51,8 @@
         assign_public_ip: yes
         instance_tags:
           Name: vprofile-bastion
+          Project: vprofile
+          Owner: Ammar
         exact_count: 1
         count_tag:
           Name: vprofile-bastion
