@@ -1,4 +1,4 @@
-- nmae: Set up bastion instance
+- name: Set up bastion instance
   hosts: localhost
   connection: local
   tasks:
