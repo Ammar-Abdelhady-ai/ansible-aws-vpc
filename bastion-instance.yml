@@ -29,7 +29,7 @@
       ec2_group:
         name: vprofile-bastion-sg
         description: Security group for vprofile bastion
-        vpc_id: "{{ vpcout.vpc.id }}"
+        vpc_id: "{{ vpcid }}"
         region: "{{ region }}"
         rules:
           - proto: tcp
