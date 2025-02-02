@@ -46,7 +46,7 @@
         wait: yes
         region: "{{ region }}"
         group_id: "{{ bastion_sg.group_id }}"
-        vpc_subnet_id: "{{ public_subnet1.subnet.id }}"
+        vpc_subnet_id: "{{ public_subnet1 }}"
         assign_public_ip: yes
         instance_tags:
           Name: vprofile-bastion
