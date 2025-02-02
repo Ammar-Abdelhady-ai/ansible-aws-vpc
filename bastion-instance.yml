@@ -39,7 +39,7 @@
       register: bastion_sg
     
     - name: Create Bastion Instance
-      amazon.aws.ec2_instance::
+      amazon.aws.ec2_instance:
         key_name: vprofile-key
         instance_type: t2.micro
         image: "{{ bastion_ami }}"
