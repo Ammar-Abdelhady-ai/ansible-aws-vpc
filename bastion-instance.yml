@@ -5,6 +5,9 @@
     - name: Import VPC Variables
       include_vars: vars/vpc_output_vars
 
+    - name: Import VPC Setup Variables
+      include_vars: vars/vpc_setup.txt
+
     - name: Import Bastion Variables
       include_vars: vars/bastion_host_setup.txt
 
