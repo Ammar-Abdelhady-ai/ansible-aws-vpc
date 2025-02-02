@@ -22,7 +22,7 @@
       copy:
         content: "{{ keyout.key.private_key }}"
         dest: "./bastion-key.pem"
-        mode: '0600'
+        mode: 0600
       when: keyout.changed
 
     - name: Create Security Group for Bastion
@@ -38,32 +38,32 @@
             cidr_ip: "{{ MYIP }}"
       register: bastion_sg
     
-    - name: Debug Bastion Security Group
+    - name: Debug Bastion SG
       debug:
         var: bastion_sg
 
-    - name: Debug Public Subnet ID
+    - name: Debug Subnet ID
       debug:
         var: public_subnet1
-    
+
     - name: Create Bastion Instance
       amazon.aws.ec2_instance:
         key_name: vprofile-key
         region: "{{ region }}"
         instance_type: t2.micro
-        image_id: "{{ bastion_ami }}"
+        image_id: "{{ bastion_ami }}"  # تصحيح image إلى image_id
         wait: yes
         wait_timeout: 300
-        instance_tags:
+        tags:
           Name: vprofile-bastion
           Project: vprofile
           Owner: Ammar
         exact_count: 1
         filters:
-          tag:Name: vprofile-bastion
-          tag:Project: vprofile
-          tag:Owner: Ammar
-        security_groups:
-          - vprofile-bastion-sg
+          "tag:Name": "vprofile-bastion"
+          "tag:Project": "vprofile"
+          "tag:Owner": "Ammar"
+        security_groups: 
+          - "{{ bastion_sg.group_name }}"
         vpc_subnet_id: "{{ public_subnet1 }}"
       register: bastion_instance
