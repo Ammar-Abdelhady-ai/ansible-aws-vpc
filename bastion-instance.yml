@@ -9,9 +9,50 @@
       include_vars: vars/bastion_instance.txt
 
     - name: Import VPC Variables
-      include_vars: vars/output_vars
-      
-    - name: Create bastion instance
-      ec2_instance:
-        name: "{{ bastion_name }}"
-        ami: "{{ ami }}"
+      include_vars: vars/vpc_output_vars
+
+    - name: Create Vprofile EC2 key
+      ec2_key:
+        name: vprofile-key
+        region: "{{ region }}"
+        state: "{{ state }}"
+      register: keyout
+    
+    - name: Save Private Key into file bastion-key.pem
+      copy:
+        content: "{{ keyout.key.private_key }}"
+        dest: "./bastion-key.pem"
+        mode: 0600
+      when: keyout.changed
+
+    - name: Create Security Group for Bastion
+      ec2_group:
+        name: vprofile-bastion-sg
+        description: Security group for vprofile bastion
+        vpc_id: "{{ vpcout.vpc.id }}"
+        region: "{{ region }}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: "{{ MYIP }}"
+      register: bastion_sg
+    
+    - name: Create Bastion Instance
+      ec2:
+        key_name: vprofile-key
+        instance_type: t2.micro
+        image: "{{ bastion_ami }}"
+        wait: yes
+        region: "{{ region }}"
+        group_id: "{{ bastion_sg.group_id }}"
+        vpc_subnet_id: "{{ public_subnet1.subnet.id }}"
+        assign_public_ip: yes
+        instance_tags:
+          Name: vprofile-bastion
+        exact_count: 1
+        count_tag:
+          Name: vprofile-bastion
+          Project: vprofile
+          Owner: Ammar
+      register: bastion_instance
