@@ -44,11 +44,10 @@
         instance_type: t2.micro
         image: "{{ bastion_ami }}"
         wait: yes
+        wait_timeout: 300
         region: "{{ region }}"
-        security_group_ids:
-          - "{{ bastion_sg.group_id }}"
+        group_id: "{{ bastion_sg.group_id }}"
         vpc_subnet_id: "{{ public_subnet1 }}"
-        assign_public_ip: yes
         instance_tags:
           Name: vprofile-bastion
           Project: vprofile
@@ -58,5 +57,4 @@
           Name: vprofile-bastion
           Project: vprofile
           Owner: Ammar
-        wait_timeout: 300
         state: "{{ state }}"
