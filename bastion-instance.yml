@@ -8,25 +8,25 @@
     - name: Import Bastion Variables
       include_vars: vars/bastion_host_setup.txt
 
-    - name: Import VPC Variables
+    - name: Import VPC Output Variables
       include_vars: vars/vpc_output_vars
 
     - name: Create Vprofile EC2 key
-      ec2_key:
+      amazon.aws.ec2_key:
         name: vprofile-key
         region: "{{ region }}"
-        state: "{{ state }}"
+        state: present
       register: keyout
     
     - name: Save Private Key into file bastion-key.pem
       copy:
         content: "{{ keyout.key.private_key }}"
         dest: "./bastion-key.pem"
-        mode: 0600
+        mode: '0600'
       when: keyout.changed
 
     - name: Create Security Group for Bastion
-      ec2_group:
+      amazon.aws.ec2_group:
         name: vprofile-bastion-sg
         description: Security group for vprofile bastion
         vpc_id: "{{ vpcid }}"
@@ -38,14 +38,6 @@
             cidr_ip: "{{ MYIP }}"
       register: bastion_sg
     
-    - name: Debug Bastion SG
-      debug:
-        var: bastion_sg
-
-    - name: Debug Subnet ID
-      debug:
-        var: public_subnet1
-
     - name: Debug Bastion Security Group
       debug:
         var: bastion_sg
@@ -53,16 +45,13 @@
     - name: Debug Public Subnet ID
       debug:
         var: public_subnet1
-
-
-
     
     - name: Create Bastion Instance
       amazon.aws.ec2_instance:
         key_name: vprofile-key
         region: "{{ region }}"
         instance_type: t2.micro
-        image: "{{ bastion_ami }}"
+        image_id: "{{ bastion_ami }}"
         wait: yes
         wait_timeout: 300
         instance_tags:
@@ -70,10 +59,11 @@
           Project: vprofile
           Owner: Ammar
         exact_count: 1
-        count_tag:
-          Name: vprofile-bastion
-          Project: vprofile
-          Owner: Ammar
-        group_id: "{{ bastion_sg.group_id }}"
+        filters:
+          tag:Name: vprofile-bastion
+          tag:Project: vprofile
+          tag:Owner: Ammar
+        security_groups:
+          - vprofile-bastion-sg
         vpc_subnet_id: "{{ public_subnet1 }}"
       register: bastion_instance
