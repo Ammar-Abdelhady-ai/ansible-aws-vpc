@@ -3,13 +3,13 @@
   connection: local
   tasks:
     - name: Import VPC Variables
-      include_vars: vars/vpc_output_vars
-
-    - name: Import VPC Setup Variables
       include_vars: vars/vpc_setup.txt
-
+    
     - name: Import Bastion Variables
       include_vars: vars/bastion_host_setup.txt
+
+    - name: Import VPC Variables
+      include_vars: vars/vpc_output_vars
 
     - name: Create Vprofile EC2 key
       ec2_key:
@@ -17,21 +17,16 @@
         region: "{{ region }}"
         state: "{{ state }}"
       register: keyout
-
-    - name: Ensure directory exists for bastion-key.pem
-      file:
-        path: "./"
-        state: directory
-
+    
     - name: Save Private Key into file bastion-key.pem
       copy:
         content: "{{ keyout.key.private_key }}"
         dest: "./bastion-key.pem"
-        mode: '0600'
+        mode: 0600
       when: keyout.changed
 
     - name: Create Security Group for Bastion
-      amazon.aws.ec2_security_group:
+      ec2_group:
         name: vprofile-bastion-sg
         description: Security group for vprofile bastion
         vpc_id: "{{ vpcid }}"
@@ -42,7 +37,7 @@
             to_port: 22
             cidr_ip: "{{ MYIP }}"
       register: bastion_sg
-
+    
     - name: Create Bastion Instance
       amazon.aws.ec2_instance:
         key_name: vprofile-key
@@ -60,7 +55,6 @@
           Name: vprofile-bastion
           Project: vprofile
           Owner: Ammar
-        security_groups:
-          - vprofile-bastion-sg
+        group_id: "{{ bastion_sg.group_id }}"
         vpc_subnet_id: "{{ public_subnet1 }}"
       register: bastion_instance
