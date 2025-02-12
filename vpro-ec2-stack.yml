@@ -140,12 +140,7 @@
 
     - name: Print out instance IDs
       debug:
-        msg: "Instance ID is {{ item.instance_ids }}"
-      with_items:
-        - "{{ web01_out }}"
-        - "{{ app01_out }}"
-        - "{{ cache01_out }}"
-        - "{{ db01_out }}"
+        msg: web01_out
 
     - name: Create Load Balancer
       ec2_elb_lb:
