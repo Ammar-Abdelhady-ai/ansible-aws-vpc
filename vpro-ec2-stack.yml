@@ -52,4 +52,4 @@
             to_port: 22
             group_id: "{{ BastionSGid }}"
           
-          register: vprostack_sg_out
+        register: vprostack_sg_out

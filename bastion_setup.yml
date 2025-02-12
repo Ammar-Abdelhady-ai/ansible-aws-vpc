@@ -39,11 +39,14 @@
             to_port: 22
             cidr_ip: "{{ MYIP }}"
       register: bastion_sg
-    
-    - name: Debug bastion_sg variable
-      debug:
-        msg: "bastion_sg: {{ bastion_sg }}"
 
+    - name: Insert/Update "Bastion-SG in vars/vpc_output_vars.yml"
+      ansible.builtin.blockinfile:
+        path: vars/vpc_output_vars.yml
+        backup: yes
+        block: |
+          BastionSG: "{{ bastion_sg.group_id }}"
+    
     - name: Create Bastion Instance
       amazon.aws.ec2_instance:
         key_name: vprofile-key
@@ -65,7 +68,3 @@
           - "{{ bastion_sg.group_name }}"
         vpc_subnet_id: "{{ public_subnet1 }}"
       register: bastion_instance
-
-    - name: Debug bastion_instance variable
-      debug:
-        msg: "bastion_instance: {{ bastion_instance }}"
