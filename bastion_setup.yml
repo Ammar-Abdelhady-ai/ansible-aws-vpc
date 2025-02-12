@@ -55,5 +55,5 @@
           "tag:Owner": "Ammar"
         security_groups: 
           - "{{ bastion_sg.group_name }}"
-        vpc_subnet_id: "{{ public_subnet1 }}"
+        vpc_subnet_id: "{{ public_subnet1.subnet.id }}"
       register: bastion_instance
