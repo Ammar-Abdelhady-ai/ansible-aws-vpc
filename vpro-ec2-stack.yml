@@ -64,4 +64,102 @@
         rules:
           - proto: all
             group_id: "{{ vprostack_sg_out.group_id }}"
+    
+    - name: Create Nginx web01
+      amazon.aws.ec2_instance:
+        key_name: vprokey
+        region: "{{ region }}"
+        instance_type: t2.micro
+        image_id: "{{ nginx_ami }}"
+        wait: yes
+        wait_timeout: 300
+        tags:
+          Name: web01
           
+        exact_count: 1
+        count_tag:
+          Name: web01
+          Project: vpro
+          Owner: Ammar
+        group_id:
+          - "{{ vprostack_sg_out.group_id }}"
+        vpc_subnet_id: "{{ private_subnet1 }}"
+      register: web01_out
+
+    - name: Create Tomcat app01
+      amazon.aws.ec2_instance:
+        key_name: vprokey
+        region: "{{ region }}"
+        instance_type: t2.micro
+        image_id: "{{ tomcat_ami }}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags:
+          Name: app01
+          Project: vprofile
+          Owner: Ammar
+          
+        exact_count: 1
+        count_tag:
+          Name: app01
+          Project: vpro
+          Owner: Ammar
+        group_id:
+          - "{{ vprostack_sg_out.group_id }}"
+        vpc_subnet_id: "{{ private_subnet1 }}"
+      register: app01_out  
+
+    - name: Create Memcached cache01
+      amazon.aws.ec2_instance:
+        key_name: vprokey
+        region: "{{ region }}"
+        instance_type: t2.micro
+        image_id: "{{ memcached_ami }}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags:
+          Name: cache01
+          Project: vprofile
+          Owner: Ammar
+          
+        exact_count: 1
+        count_tag:
+          Name: cache01
+          Project: vpro
+          Owner: Ammar
+        group_id:
+          - "{{ vprostack_sg_out.group_id }}"
+        vpc_subnet_id: "{{ private_subnet1 }}"
+      register: cache01_out
+
+    - name: Create MYSQL db01
+      amazon.aws.ec2_instance:
+        key_name: vprokey
+        region: "{{ region }}"
+        instance_type: t2.micro
+        image_id: "{{ my_sql_ami }}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags:
+          Name: db01
+          Project: vprofile
+          Owner: Ammar
+          
+        exact_count: 1
+        count_tag:
+          Name: db01
+          Project: vpro
+          Owner: Ammar
+        group_id:
+          - "{{ vprostack_sg_out.group_id }}"
+        vpc_subnet_id: "{{ private_subnet1 }}"
+      register: db01_out 
+
+    - name: Print out instance IDs
+      debug:
+        msg: "Instance ID is {{ item.instance_ids }}"
+      with_items:
+        - "{{ web01_out }}"
+        - "{{ app01_out }}"
+        - "{{ cache01_out }}"
+        - "{{ db01_out }}"
