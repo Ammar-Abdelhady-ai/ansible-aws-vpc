@@ -20,4 +20,36 @@
         dest: "./loginhey-vpro.pem"
         mode: 0600
       when: vprokey_out.changed
-      
+
+    - name: Create Load Balancer Security Group
+      ec2_group:
+        name: vpro-elb-sg
+        description: Allow Port 80 from anywhere
+        vpc_id: "{{ vpcid }}"
+        region: "{{ region }}"
+        rules:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+        register: elb_sg_out
+
+    - name: Create EC2 Security Group for Vprofile Stack
+      ec2_group:
+        name: vprostack-sg
+        description: Allow Port 22 from anywhere
+        vpc_id: "{{ vpcid }}"
+        region: "{{ region }}"
+        purge_rules: no
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            group_id: "{{ elb_sg_out.group_id }}"
+          
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            group_id: "{{ BastionSGid }}"
+          
+          register: vprostack_sg_out
