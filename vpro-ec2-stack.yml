@@ -32,7 +32,7 @@
             from_port: 80
             to_port: 80
             cidr_ip: 0.0.0.0/0
-        register: elb_sg_out
+      register: elb_sg_out
 
     - name: Create EC2 Security Group for Vprofile Stack
       ec2_group:
@@ -52,7 +52,7 @@
             to_port: 22
             group_id: "{{ BastionSG }}"
           
-        register: vprostack_sg_out
+      register: vprostack_sg_out
 
     - name: Update Security Group with its own SG ID
       amazon.aws.ec2_group:
