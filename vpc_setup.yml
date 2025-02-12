@@ -187,5 +187,5 @@
           public_rt: {{ public_rt }}
           nat_gw: {{ nat_gw }}
           private_rt: {{ private_rt }}
-        dest: vars/vpc_output_vars
+        dest: vars/vpc_output_vars.yml
    
