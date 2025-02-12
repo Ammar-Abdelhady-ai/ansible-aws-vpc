@@ -166,11 +166,11 @@
       blockinfile:
         path: provision-stack/group_vars/hostsip
         block: |
-          web01: "{{ web01_out.instances[0].private_ip }}"
-          app01: "{{ app01_out.instances[0].private_ip }}"
-          cache01: "{{ cache01_out.instances[0].private_ip }}"
-          db01: "{{ db01_out.instances[0].private_ip }}"
-          rabbitmq01: "{{ rabbitmq01_out.instances[0].private_ip }}"
+          web01: "{{ web01_out.instances[0].private_ip_address }}"
+          app01: "{{ app01_out.instances[0].private_ip_address }}"
+          cache01: "{{ cache01_out.instances[0].private_ip_address }}"
+          db01: "{{ db01_out.instances[0].private_ip_address }}"
+          rabbitmq01: "{{ rabbitmq01_out.instances[0].private_ip_address }}"
     - name: Copy loginhey-vpro.pem to provision-stack/ dir
       copy:
         src: "./loginhey-vpro.pem"
