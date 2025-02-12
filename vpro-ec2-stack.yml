@@ -3,7 +3,7 @@
   connection: local
   tasks:
     - name: import VPC setup Variables
-      include_vars: vars/vpc_output_vars
+      include_vars: vars/vpc_output_vars.yml
 
     - name: Import vprofileelasticsetup Variables
       include_vars: vars/vprofileelasticsetup

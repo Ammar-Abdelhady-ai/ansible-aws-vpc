@@ -6,7 +6,7 @@
       include_vars: vars/vpc_setup.txt
     
     - name: Import VPC Output Variables
-      include_vars: vars/vpc_output_vars
+      include_vars: vars/vpc_output_vars.yml
 
     - name: Create Vprofile EC2 key
       amazon.aws.ec2_key:

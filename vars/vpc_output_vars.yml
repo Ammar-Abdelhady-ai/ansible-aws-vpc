@@ -1,0 +1,16 @@
+BastionSGid: 44654448q
+region: us-west-2
+vpcid: vpc-086e48d4008b3b0f5
+public_subnet1: "subnet-01f0cf23ae7d86401"
+public_subnet2: "subnet-00a6a4e6bd43662ff"
+public_subnet3: "subnet-0b0b1e67497def65a"
+private_subnet1: "subnet-0cfe44eb3a6e0d6bb"
+private_subnet2: "subnet-0fad88b1843591772"
+private_subnet3: "subnet-07dc0c733b9ed9cfe"
+igw: "igw-0ba2ad02d43b2a647"
+public_rt: "rtb-088bca66c4a96c2fb"
+nat_gw: "nat-01a5cc47e45683559"
+private_rt: "rtb-0b7b87c6b04301742"
+
+
+
