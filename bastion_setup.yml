@@ -4,7 +4,7 @@
   connection: local
   tasks:
     - name: Import VPC Variables
-      include_vars: vars/vpc_setup.txt
+      include_vars: vars/vpc_setup.yml
     
     - name: Import VPC Output Variables
       include_vars: vars/vpc_output_vars.yml
