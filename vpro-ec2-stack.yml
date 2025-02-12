@@ -166,11 +166,16 @@
       blockinfile:
         path: provision-stack/group_vars/hostsip
         block: |
-          web01: "{{ web01_out.instances[0].public_ip }}"
-          app01: "{{ app01_out.instances[0].public_ip }}"
-          cache01: "{{ cache01_out.instances[0].public_ip }}"
-          db01: "{{ db01_out.instances[0].public_ip }}"
-          rabbitmq01: "{{ rabbitmq01_out.instances[0].public_ip }}"
+          web01: "{{ web01_out.instances[0].private_ip }}"
+          app01: "{{ app01_out.instances[0].private_ip }}"
+          cache01: "{{ cache01_out.instances[0].private_ip }}"
+          db01: "{{ db01_out.instances[0].private_ip }}"
+          rabbitmq01: "{{ rabbitmq01_out.instances[0].private_ip }}"
+    - name: Copy loginhey-vpro.pem to provision-stack/ dir
+      copy:
+        src: "./loginhey-vpro.pem"
+        dest: "./provision-stack/loginhey-vpro.pem"
+        mode: 0400
 
     - name: Insert/Update Inventory file provision-stack/inventory-vpro
       blockinfile:
