@@ -66,6 +66,24 @@
         vpc_subnet_id: "{{ private_subnet1 }}"
       register: web01_out
 
+    - name: Create rabbitmq01
+      amazon.aws.ec2_instance:
+        key_name: vprokey
+        region: "{{ region }}"
+        instance_type: t2.micro
+        image_id: "{{ rmq_ami }}"
+        wait: yes
+        wait_timeout: 300
+        tags:
+          Name: rabbitmq01
+          Project: vprofile
+          Owner: Ammar
+        exact_count: 1
+        security_groups:
+          - "{{ vprostack_sg_out.group_id }}"
+        vpc_subnet_id: "{{ private_subnet1 }}"
+      register: rabbitmq01_out
+
     - name: Create Tomcat app01
       amazon.aws.ec2_instance:
         key_name: vprokey
@@ -128,3 +146,81 @@
         - "{{ app01_out }}"
         - "{{ cache01_out }}"
         - "{{ db01_out }}"
+
+    - name: Create Load Balancer
+      ec2_elb_lb:
+        name: vpro-elb
+        region: "{{ region }}"
+        state: present
+        instance_ids: 
+          - "{{ web01_out.tagged_instances[0].id }}"
+        purge_instance_ids: true
+        security_group_ids:
+          - "{{ elb_sg_out.group_id }}"
+        listeners:
+          - protocol: HTTP
+            load_balancer_port: 80
+            instance_port: 80
+        subnets:
+          - "{{ public_subnet1 }}"
+          - "{{ public_subnet2 }}"
+          - "{{ public_subnet3 }}"
+      register: elb_out
+
+    - name: Insert/Update Hosts IP & Name in file provision-stack/group_vars/hostsip
+      blockinfile:
+        path: provision-stack/group_vars/hostsip
+        block: |
+          web01: "{{ web01_out.tagged_instances[0].public_ip }}"
+          app01: "{{ app01_out.tagged_instances[0].public_ip }}"
+          cache01: "{{ cache01_out.tagged_instances[0].public_ip }}"
+          db01: "{{ db01_out.tagged_instances[0].public_ip }}"
+          rabbitmq01_out: "{{ rabbitmq01_out.tagged_instances[0].public_ip }}"
+
+    - name: Copy Login Key to provision-stack directory
+      copy:
+        src: "./loginhey-vpro.pem"
+        dest: "./provision-stack/loginhey-vpro.pem"
+        mode: 0400
+    
+    - name: Insert/Update Inventory file proovision-stack/inventory-vpro
+      blockinfile:
+        path: provision-stack/inventory-vpro
+        block: |
+          web01 ansible_host={{ web01_out.tagged_instances[0].public_ip }} 
+          app01 ansible_host={{ app01_out.tagged_instances[0].public_ip }}
+          rabbitmq01 ansible_host={{ rabbitmq01_out.tagged_instances[0].public_ip }}
+          cache01 ansible_host={{ cache01_out.tagged_instances[0].public_ip }}
+          db01 ansible_host={{ db01_out.tagged_instances[0].public_ip }}
+          cntl ansible_host=172.0.0.1 ansible_connection=local
+
+          [webservers]
+          web01
+
+          [appservers]
+          app01
+
+          [rabbitmq01]
+          rabbitmq01
+
+          [cacheservers]
+          cache01
+
+          [dbservers]
+          db01
+
+          [control]
+          cntl
+
+          [stack_inst:children]
+          webservers
+          appservers
+          cacheservers
+          dbservers
+          rabbitmq01
+
+          [stack_inst:vars]
+          ansible_user=ubuntu
+          ansible_ssh_private_key_file=loginhey-vpro.pem
+          #ansible_python_interpreter=/usr/bin/python3
+

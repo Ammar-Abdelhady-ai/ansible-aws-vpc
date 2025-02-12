@@ -177,6 +177,7 @@
       copy:
         content: |
           vpcid: {{ vpcid }}
+          region: {{ region }}
           public_subnet1: {{ public_subnet1_id }}
           public_subnet2: {{ public_subnet2_id }}
           public_subnet3: {{ public_subnet3_id }}
