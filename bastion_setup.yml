@@ -35,7 +35,6 @@
             cidr_ip: "{{ MYIP }}"
       register: bastion_sg
     
-
     - name: Create Bastion Instance
       amazon.aws.ec2_instance:
         key_name: vprofile-key
@@ -55,5 +54,5 @@
           "tag:Owner": "Ammar"
         security_groups: 
           - "{{ bastion_sg.group_name }}"
-        vpc_subnet_id: "{{ public_subnet1.subnet.id }}"
+        vpc_subnet_id: "{{ public_subnet1 }}"
       register: bastion_instance
