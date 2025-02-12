@@ -6,7 +6,7 @@
       include_vars: vars/vpc_output_vars.yml
 
     - name: Import vprofileelasticsetup Variables
-      include_vars: vars/vprofileelasticsetup
+      include_vars: vars/vprofileelasticsetup.yml
 
     - name: create Vprofile EC2 Key 
       ec2_key:
