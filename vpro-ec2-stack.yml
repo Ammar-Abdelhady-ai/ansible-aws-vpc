@@ -8,7 +8,7 @@
     - name: Import vprofileelasticsetup Variables
       include_vars: vars/vprofileelasticsetup
 
-    - name: create Vprofile EC2 Key
+    - name: create Vprofile EC2 Key .
       ec2_key:
         name: vprokey
         region: "{{ region }}"
