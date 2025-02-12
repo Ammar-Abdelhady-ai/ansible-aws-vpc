@@ -45,26 +45,9 @@
           - proto: tcp
             from_port: 22
             to_port: 22
-            group_id: "{{ elb_sg_out.group_id }}"
-          
-          - proto: tcp
-            from_port: 22
-            to_port: 22
-            group_id: "{{ BastionSG }}"
-          
+            cidr_ip: 0.0.0.0/0
       register: vprostack_sg_out
 
-    - name: Update Security Group with its own SG ID
-      amazon.aws.ec2_group:
-        name: vprostack-sg
-        description: Allow Port 22 from anywhere and all port within SG
-        region: "{{ region }}"
-        vpc_id: "{{ vpcid }}"
-        purge_rules: no
-        rules:
-          - proto: all
-            group_id: "{{ vprostack_sg_out.group_id }}"
-    
     - name: Create Nginx web01
       amazon.aws.ec2_instance:
         key_name: vprokey
@@ -75,13 +58,10 @@
         wait_timeout: 300
         tags:
           Name: web01
-          
-        exact_count: 1
-        count_tag:
-          Name: web01
           Project: vpro
           Owner: Ammar
-        group_id:
+        exact_count: 1
+        security_groups:
           - "{{ vprostack_sg_out.group_id }}"
         vpc_subnet_id: "{{ private_subnet1 }}"
       register: web01_out
@@ -94,17 +74,12 @@
         image_id: "{{ tomcat_ami }}"
         wait: yes
         wait_timeout: 300
-        instance_tags:
+        tags:
           Name: app01
           Project: vprofile
           Owner: Ammar
-          
         exact_count: 1
-        count_tag:
-          Name: app01
-          Project: vpro
-          Owner: Ammar
-        group_id:
+        security_groups:
           - "{{ vprostack_sg_out.group_id }}"
         vpc_subnet_id: "{{ private_subnet1 }}"
       register: app01_out  
@@ -117,17 +92,12 @@
         image_id: "{{ memcached_ami }}"
         wait: yes
         wait_timeout: 300
-        instance_tags:
+        tags:
           Name: cache01
           Project: vprofile
           Owner: Ammar
-          
         exact_count: 1
-        count_tag:
-          Name: cache01
-          Project: vpro
-          Owner: Ammar
-        group_id:
+        security_groups:
           - "{{ vprostack_sg_out.group_id }}"
         vpc_subnet_id: "{{ private_subnet1 }}"
       register: cache01_out
@@ -140,17 +110,12 @@
         image_id: "{{ my_sql_ami }}"
         wait: yes
         wait_timeout: 300
-        instance_tags:
+        tags:
           Name: db01
           Project: vprofile
           Owner: Ammar
-          
         exact_count: 1
-        count_tag:
-          Name: db01
-          Project: vpro
-          Owner: Ammar
-        group_id:
+        security_groups:
           - "{{ vprostack_sg_out.group_id }}"
         vpc_subnet_id: "{{ private_subnet1 }}"
       register: db01_out 
