@@ -63,7 +63,7 @@
         exact_count: 1
         security_groups:
           - "{{ vprostack_sg_out.group_id }}"
-        vpc_subnet_id: "{{ private_subnet1 }}"
+        vpc_subnet_id: "{{ private_subnet1_id }}"
       register: web01_out
 
     - name: Create rabbitmq01
@@ -81,7 +81,7 @@
         exact_count: 1
         security_groups:
           - "{{ vprostack_sg_out.group_id }}"
-        vpc_subnet_id: "{{ private_subnet1 }}"
+        vpc_subnet_id: "{{ private_subnet1_id }}"
       register: rabbitmq01_out
 
     - name: Create Tomcat app01
@@ -99,7 +99,7 @@
         exact_count: 1
         security_groups:
           - "{{ vprostack_sg_out.group_id }}"
-        vpc_subnet_id: "{{ private_subnet1 }}"
+        vpc_subnet_id: "{{ private_subnet1_id }}"
       register: app01_out  
 
     - name: Create Memcached cache01
@@ -117,7 +117,7 @@
         exact_count: 1
         security_groups:
           - "{{ vprostack_sg_out.group_id }}"
-        vpc_subnet_id: "{{ private_subnet1 }}"
+        vpc_subnet_id: "{{ private_subnet1_id }}"
       register: cache01_out
 
     - name: Create MYSQL db01
@@ -135,7 +135,7 @@
         exact_count: 1
         security_groups:
           - "{{ vprostack_sg_out.group_id }}"
-        vpc_subnet_id: "{{ private_subnet1 }}"
+        vpc_subnet_id: "{{ private_subnet1_id }}"
       register: db01_out 
 
     - name: Print out instance IDs
@@ -150,16 +150,16 @@
         instance_ids: 
           - "{{ web01_out.instance_ids[0] }}"
         purge_instance_ids: true
-        :
+        security_group_ids:
           - "{{ elb_sg_out.group_id }}"
         listeners:
           - protocol: HTTP
             load_balancer_port: 80
             instance_port: 80
         subnets:
-          - "{{ public_subnet1 }}"
-          - "{{ public_subnet2 }}"
-          - "{{ public_subnet3 }}"
+          - "{{ public_subnet1_id }}"
+          - "{{ public_subnet2_id }}"
+          - "{{ public_subnet3_id }}"
       register: elb_out
 
     - name: Insert/Update Hosts IP & Name in file provision-stack/group_vars/hostsip
