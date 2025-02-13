@@ -161,7 +161,7 @@
         
     - name: Set ids as the fact Variables
       set_fact:
-        vpcid: "{{ vpcout.vpc.id }}"
+        vpc_id: "{{ vpcout.vpc.id }}"
         public_subnet1_id: "{{ public_subnet1.subnet.id }}"
         public_subnet2_id: "{{ public_subnet2.subnet.id }}"
         public_subnet3_id: "{{ public_subnet3.subnet.id }}"
@@ -176,7 +176,7 @@
     - name: Create Variables file for VPC output
       copy:
         content: |
-          vpcid: {{ vpcid }}
+          vpc_id: {{ vpc_id }}
           region: {{ region }}
           public_subnet1_id: {{ public_subnet1_id }}
           public_subnet2_id: {{ public_subnet2_id }}

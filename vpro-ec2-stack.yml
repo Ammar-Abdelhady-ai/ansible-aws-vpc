@@ -25,7 +25,7 @@
       ec2_group:
         name: vpro-elb-sg
         description: Allow Port 80 from anywhere
-        vpc_id: "{{ vpcid_id }}"
+        vpc_id: "{{ vpc_id }}"
         region: "{{ region }}"
         rules:
           - proto: tcp
@@ -38,7 +38,7 @@
       ec2_group:
         name: vprostack-sg
         description: Allow Port 22 from anywhere
-        vpc_id: "{{ vpcid_id }}"
+        vpc_id: "{{ vpc_id }}"
         region: "{{ region }}"
         purge_rules: no
         rules:
