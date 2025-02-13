@@ -10,7 +10,7 @@
 
     - name: create Vprofile EC2 Key 
       ec2_key:
-        name: vprokey
+        name: loginkey-vpro
         region: "{{ region }}"
       register: vprokey_out
 
@@ -22,7 +22,7 @@
         content: "{{ vprokey_out.key }}"
         dest: "./loginkey-vpro.pem"
         mode: 0600
-      #when: vprokey_out.changed
+      when: vprokey_out.changed
 
     - name: Create Load Balancer Security Group
       ec2_group:
