@@ -1,0 +1,9 @@
+Parameters:
+    KeyPair:
+        Description: cicd stack key
+        Type: "AWS::EC2::KeyPair::KeyName"
+
+    MYIP:
+        Description: Assign an IP address
+        Type: "String"
+        Default: 
