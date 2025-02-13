@@ -166,11 +166,11 @@
           rabbitmq01: "{{ rabbitmq01_out.instances[0].private_ip_address }}"
 
     - name: Save private key into file loginkey-vpro.pem
-        copy:
-          content: "{{ vprokey_out.key.private_key | default('') }}"
-          dest: "./loginkey-vpro.pem"
-          mode: 0600
-        when: vprokey_out.key.private_key is defined
+      copy:
+        content: "{{ vprokey_out.key.private_key | default('') }}"
+        dest: "./loginkey-vpro.pem"
+        mode: 0600
+      when: vprokey_out.key.private_key is defined
 
     - name: Copy loginkey-vpro.pem to provision-stack/ dir
       copy:
