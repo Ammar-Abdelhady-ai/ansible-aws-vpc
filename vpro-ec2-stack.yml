@@ -165,7 +165,7 @@
           db01: "{{ db01_out.instances[0].private_ip_address }}"
           rabbitmq01: "{{ rabbitmq01_out.instances[0].private_ip_address }}"
 
-      - name: Save private key into file loginkey-vpro.pem
+    - name: Save private key into file loginkey-vpro.pem
         copy:
           content: "{{ vprokey_out.key.private_key | default('') }}"
           dest: "./loginkey-vpro.pem"
