@@ -168,25 +168,25 @@
         private_subnet1_id: "{{ private_subnet1.subnet.id }}"
         private_subnet2_id: "{{ private_subnet2.subnet.id }}"
         private_subnet3_id: "{{ private_subnet3.subnet.id }}"
-        igw: "{{ igw.gateway_id }}"
-        public_rt: "{{ public_rt.route_table.id }}"
-        nat_gw: "{{ nat_gw.nat_gateway_id }}"
-        private_rt: "{{ private_rt.route_table.id }}"
+        igw_id: "{{ igw.gateway_id }}"
+        public_rt_id: "{{ public_rt.route_table.id }}"
+        nat_gw_id: "{{ nat_gw.nat_gateway_id }}"
+        private_rt_id: "{{ private_rt.route_table.id }}"
 
     - name: Create Variables file for VPC output
       copy:
         content: |
           vpcid: {{ vpcid }}
           region: {{ region }}
-          public_subnet1: {{ public_subnet1_id }}
-          public_subnet2: {{ public_subnet2_id }}
-          public_subnet3: {{ public_subnet3_id }}
-          private_subnet1: {{ private_subnet1_id }}
-          private_subnet2: {{ private_subnet2_id }}
-          private_subnet3: {{ private_subnet3_id }}
-          igw: {{ igw }}
-          public_rt: {{ public_rt }}
-          nat_gw: {{ nat_gw }}
-          private_rt: {{ private_rt }}
+          public_subnet1_id: {{ public_subnet1_id }}
+          public_subnet2_id: {{ public_subnet2_id }}
+          public_subnet3_id: {{ public_subnet3_id }}
+          private_subnet1_id: {{ private_subnet1_id }}
+          private_subnet2_id: {{ private_subnet2_id }}
+          private_subnet3_id: {{ private_subnet3_id }}
+          igw_id: {{ igw_id }}
+          public_rt_id: {{ public_rt_id }}
+          nat_gw_id: {{ nat_gw_id }}
+          private_rt_id: {{ private_rt_id }}
         dest: vars/vpc_output_vars.yml
    
