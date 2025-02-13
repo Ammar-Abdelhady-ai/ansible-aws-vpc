@@ -17,7 +17,7 @@
     - name: Save private key into file vpro-key.pem
       copy:
         content: "{{ vprokey_out.key.private_key }}"
-        dest: "./loginhey-vpro.pem"
+        dest: "./loginkey-vpro.pem"
         mode: 0600
       when: vprokey_out.changed
 
@@ -172,10 +172,10 @@
           db01: "{{ db01_out.instances[0].private_ip_address }}"
           rabbitmq01: "{{ rabbitmq01_out.instances[0].private_ip_address }}"
 
-    - name: Copy loginhey-vpro.pem to provision-stack/ dir
+    - name: Copy loginkey-vpro.pem to provision-stack/ dir
       copy:
-        src: "./loginhey-vpro.pem"
-        dest: "./provision-stack/loginhey-vpro.pem"
+        src: "./loginkey-vpro.pem"
+        dest: "./provision-stack/loginkey-vpro.pem"
         mode: 0400
 
     - name: Insert/Update Inventory file provision-stack/inventory-vpro
@@ -216,5 +216,5 @@
 
           [stack_inst:vars]
           ansible_user=ubuntu
-          ansible_ssh_private_key_file=loginhey-vpro.pem
+          ansible_ssh_private_key_file=loginkey-vpro.pem
           #ansible_python_interpreter=/usr/bin/python3
