@@ -171,11 +171,14 @@
           cache01: "{{ cache01_out.instances[0].private_ip_address }}"
           db01: "{{ db01_out.instances[0].private_ip_address }}"
           rabbitmq01: "{{ rabbitmq01_out.instances[0].private_ip_address }}"
+
     - name: Copy loginhey-vpro.pem to provision-stack/ dir
       copy:
-        src: "./loginhey-vpro.pem"
+        src: "/home/ubuntu/loginhey-vpro.pem"  # Ensure the correct path
         dest: "./provision-stack/loginhey-vpro.pem"
         mode: 0400
+        remote_src: yes
+
 
     - name: Insert/Update Inventory file provision-stack/inventory-vpro
       blockinfile:
