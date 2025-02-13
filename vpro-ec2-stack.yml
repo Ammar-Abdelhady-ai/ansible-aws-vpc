@@ -25,7 +25,7 @@
       ec2_group:
         name: vpro-elb-sg
         description: Allow Port 80 from anywhere
-        vpc_id: "{{ vpcid }}"
+        vpc_id: "{{ vpcid_id }}"
         region: "{{ region }}"
         rules:
           - proto: tcp
@@ -38,7 +38,7 @@
       ec2_group:
         name: vprostack-sg
         description: Allow Port 22 from anywhere
-        vpc_id: "{{ vpcid }}"
+        vpc_id: "{{ vpcid_id }}"
         region: "{{ region }}"
         purge_rules: no
         rules:
@@ -171,7 +171,7 @@
           cache01: "{{ cache01_out.instances[0].private_ip_address }}"
           db01: "{{ db01_out.instances[0].private_ip_address }}"
           rabbitmq01: "{{ rabbitmq01_out.instances[0].private_ip_address }}"
-          
+
     - name: Copy loginhey-vpro.pem to provision-stack/ dir
       copy:
         src: "./loginhey-vpro.pem"
