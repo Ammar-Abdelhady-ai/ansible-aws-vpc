@@ -174,7 +174,7 @@
 
     - name: Copy loginhey-vpro.pem to provision-stack/ dir
       copy:
-        src: "/home/ubuntu/loginhey-vpro.pem"  # Ensure the correct path
+        src: "./loginhey-vpro.pem"  # Ensure the correct path
         dest: "./provision-stack/loginhey-vpro.pem"
         mode: 0400
         remote_src: yes
