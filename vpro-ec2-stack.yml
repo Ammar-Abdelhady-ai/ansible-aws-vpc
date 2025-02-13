@@ -150,7 +150,7 @@
         instance_ids: 
           - "{{ web01_out.instance_ids[0] }}"
         purge_instance_ids: true
-        security_group_ids:
+        :
           - "{{ elb_sg_out.group_id }}"
         listeners:
           - protocol: HTTP
