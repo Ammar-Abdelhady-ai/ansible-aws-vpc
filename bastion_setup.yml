@@ -29,7 +29,7 @@
       
     - name: Debug public_subnet1
       debug:
-        msg: "Public Subnet ID: {{ public_subnet1 }}"
+        msg: "Public Subnet ID: {{ public_subnet1.subnet.id }}"
 
     - name: Create Security Group for Bastion
       amazon.aws.ec2_group:
@@ -70,5 +70,5 @@
           "tag:Owner": "Ammar"
         security_groups: 
           - "{{ bastion_sg.group_id }}"
-        vpc_subnet_id: "{{ public_subnet1 }}"
+        vpc_subnet_id: "{{ public_subnet1.subnet.id }}"
       register: bastion_instance
