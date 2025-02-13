@@ -26,6 +26,10 @@
         dest: "./bastion-key.pem"
         mode: 0600
       when: keyout.changed
+      
+    - name: Debug public_subnet1
+      debug:
+        msg: "Public Subnet ID: {{ public_subnet1 }}"
 
     - name: Create Security Group for Bastion
       amazon.aws.ec2_group:
