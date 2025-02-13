@@ -14,6 +14,13 @@
         region: "{{ region }}"
       register: vprokey_out
 
+    - name: Save private key into file vpro-key.pem
+      copy:
+        content: "{{ vprokey_out.key.private_key }}"
+        dest: "./loginhey-vpro.pem"
+        mode: 0600
+      when: vprokey_out.changed
+
     - name: Create Load Balancer Security Group
       ec2_group:
         name: vpro-elb-sg
@@ -164,21 +171,12 @@
           cache01: "{{ cache01_out.instances[0].private_ip_address }}"
           db01: "{{ db01_out.instances[0].private_ip_address }}"
           rabbitmq01: "{{ rabbitmq01_out.instances[0].private_ip_address }}"
-
-    - name: Save private key into file loginkey-vpro.pem
+          
+    - name: Copy loginhey-vpro.pem to provision-stack/ dir
       copy:
-        content: "{{ vprokey_out.key.private_key | default('') }}"
-        dest: "./loginkey-vpro.pem"
-        mode: 0600
-      when: vprokey_out.key.private_key is defined
-
-    - name: Copy loginkey-vpro.pem to provision-stack/ dir
-      copy:
-        src: "./loginkey-vpro.pem"
-        dest: "./provision-stack/loginkey-vpro.pem"
+        src: "./loginhey-vpro.pem"
+        dest: "./provision-stack/loginhey-vpro.pem"
         mode: 0400
-        remote_src: no
-
 
     - name: Insert/Update Inventory file provision-stack/inventory-vpro
       blockinfile:
@@ -218,5 +216,5 @@
 
           [stack_inst:vars]
           ansible_user=ubuntu
-          ansible_ssh_private_key_file=loginkey-vpro.pem
+          ansible_ssh_private_key_file=loginhey-vpro.pem
           #ansible_python_interpreter=/usr/bin/python3
