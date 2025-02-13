@@ -12,17 +12,17 @@
       ec2_key:
         name: loginkey-vpro
         region: "{{ region }}"
-      register: loginkey-vpro_out
+      register: loginkey_vpro_out
 
     - debug:
-        var: loginkey-vpro_out
+        var: loginkey_vpro_out
 
     - name: Save private key into file vpro-key.pem
       copy:
-        content: "{{loginkey-vpro_out.key.private_key }}"
+        content: "{{loginkey_vpro_out.key.private_key }}"
         dest: "./loginkey-vpro.pem"
         mode: 0600
-      when: loginkey-vpro_out.changed
+      when: loginkey_vpro_out.changed
 
     - name: Create Load Balancer Security Group
       ec2_group:
