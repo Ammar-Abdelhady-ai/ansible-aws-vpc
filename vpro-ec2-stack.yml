@@ -12,17 +12,17 @@
       ec2_key:
         name: loginkey-vpro
         region: "{{ region }}"
-      register: vprokey_out
+      register: loginkey-vpro_out
 
     - debug:
-        var: vprokey_out.key
+        var: loginkey-vpro_out
 
     - name: Save private key into file vpro-key.pem
       copy:
-        content: "{{ vprokey_out.key }}"
+        content: "{{loginkey-vpro_out.key.private_key }}"
         dest: "./loginkey-vpro.pem"
         mode: 0600
-      when: vprokey_out.changed
+      when: loginkey-vpro_out.changed
 
     - name: Create Load Balancer Security Group
       ec2_group:
@@ -53,7 +53,7 @@
 
     - name: Create Nginx web01
       amazon.aws.ec2_instance:
-        key_name: vprokey
+        key_name: loginkey-vpro
         region: "{{ region }}"
         instance_type: t2.micro
         image_id: "{{ nginx_ami }}"
@@ -71,7 +71,7 @@
 
     - name: Create rabbitmq01
       amazon.aws.ec2_instance:
-        key_name: vprokey
+        key_name: loginkey-vpro
         region: "{{ region }}"
         instance_type: t2.micro
         image_id: "{{ rmq_ami }}"
@@ -89,7 +89,7 @@
 
     - name: Create Tomcat app01
       amazon.aws.ec2_instance:
-        key_name: vprokey
+        key_name: loginkey-vpro
         region: "{{ region }}"
         instance_type: t2.micro
         image_id: "{{ tomcat_ami }}"
@@ -107,7 +107,7 @@
 
     - name: Create Memcached cache01
       amazon.aws.ec2_instance:
-        key_name: vprokey
+        key_name: loginkey-vpro
         region: "{{ region }}"
         instance_type: t2.micro
         image_id: "{{ memcached_ami }}"
@@ -125,7 +125,7 @@
 
     - name: Create MYSQL db01
       amazon.aws.ec2_instance:
-        key_name: vprokey
+        key_name: loginkey-vpro
         region: "{{ region }}"
         instance_type: t2.micro
         image_id: "{{ my_sql_ami }}"
